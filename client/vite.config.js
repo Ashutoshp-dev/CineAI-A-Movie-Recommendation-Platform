@@ -7,8 +7,8 @@ export default defineConfig(({mode})=>({
   server: {
     host:true,
     proxy:{
-      '/movies': 'http://localhost:3000',
-      '/user': 'http://localhost:3000',
+      '/movies': 'https://cineai-a-movie-recommendation-platform.onrender.com',
+      '/user': 'https://cineai-a-movie-recommendation-platform.onrender.com',
     }
   },
   base: mode === 'production' ? '/CineAI-A-Movie-Recommendation-Platform/' : '/',

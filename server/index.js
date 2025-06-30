@@ -7,25 +7,30 @@ import geminiRoutes from './routes/geminiRoutes.js';
 
 dotenv.config()
 
-const port=process.env.PORT||3000
-const mongoURI =process.env.MONGO_URI
-const app=express()
+const port = process.env.PORT || 3000
+const mongoURI = process.env.MONGO_URI
+const app = express()
 
 app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: "*",
+  credentials: true
+}))
 
 
 mongoose.connect(mongoURI)
-.then(() => {console.log('✅ MongoDB connected')
-console.log('Using DB:', mongoose.connection.name)})
-.catch((err) => console.error('❌ MongoDB connection error:', err));
+  .then(() => {
+    console.log('✅ MongoDB connected')
+    console.log('Using DB:', mongoose.connection.name)
+  })
+  .catch((err) => console.error('❌ MongoDB connection error:', err));
 
-app.get('/',(req,res)=>{
-    res.send('API running')
+app.get('/', (req, res) => {
+  res.send('API running')
 })
 
-app.use('/movies',movieRoutes)
-app.use('/movies',geminiRoutes)
+app.use('/movies', movieRoutes)
+app.use('/movies', geminiRoutes)
 
 const userData = new Map();
 
@@ -49,6 +54,6 @@ app.patch("/user/set-avatar/:id", (req, res) => {
   res.json({ message: "Avatar updated successfully" });
 });
 
-app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`)
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
 })

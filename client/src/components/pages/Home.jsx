@@ -33,6 +33,7 @@ const Home = ({
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
   const [trendingMovies, setTrendingMovies] = useState([]);
+  const [indianMovies, setIndianMovies] = useState([]);
   const [recentMovies, setRecentMovies] = useState([]);
   const [popularTVShows, setPopularTVShows] = useState([]);
   const [mixedRecommendations, setMixedRecommendations] = useState([]);
@@ -142,6 +143,38 @@ const Home = ({
       }
     };
 
+    const fetchIndianMovies = async () => {
+      try {
+        const indianLangs = [
+          "hi",
+          "te",
+          "ta",
+          "ml",
+          "kn",
+          "mr",
+          "bn",
+          "gu",
+          "pa",
+          "ur",
+        ];
+        let allIndianMovies = [];
+
+        for (let lang of indianLangs) {
+          const res = await fetch(
+            `https://api.themoviedb.org/3/discover/movie?with_original_language=${lang}&sort_by=popularity.desc&api_key=${
+              import.meta.env.VITE_API_KEY
+            }&page=1`
+          );
+          const data = await res.json();
+          allIndianMovies = allIndianMovies.concat(data.results || []);
+        }
+
+        setIndianMovies(allIndianMovies);
+      } catch (err) {
+        console.error("Failed to fetch Indian movies:", err);
+      }
+    };
+
     const fetchRecent = async () => {
       const today = new Date();
       const prior = new Date();
@@ -177,7 +210,7 @@ const Home = ({
         console.error("Error fetching TV shows:", err);
       }
     };
-
+    fetchIndianMovies()
     fetchTVShows();
     fetchRecent();
     fetchTrending();
@@ -296,9 +329,6 @@ const Home = ({
   const yourMovies = movie?.results || [];
   const topRatedMovies = allMovies.filter((item) => item.vote_average > 8);
   const indianLanguages = ["hi", "te", "ta", "ml", "kn", "mr", "bn"];
-  const indianMovies = allMovies.filter((item) =>
-    indianLanguages.includes(item.original_language)
-  );
   const popularMovies = allMovies.filter((item) => item.popularity > 30);
 
   const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);

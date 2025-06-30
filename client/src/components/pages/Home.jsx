@@ -32,9 +32,11 @@ const Home = ({
   const [showmenu, setShowMenu] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
+  const [topRatedMovies, setTopRatedMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [indianMovies, setIndianMovies] = useState([]);
   const [recentMovies, setRecentMovies] = useState([]);
+  const [popularMovies,setPopularMovies]=useState([]);
   const [popularTVShows, setPopularTVShows] = useState([]);
   const [mixedRecommendations, setMixedRecommendations] = useState([]);
 
@@ -129,6 +131,31 @@ const Home = ({
   }, [location.pathname]);
 
   useEffect(() => {
+
+const fetchTopRatedMovies = async () => {
+  try {
+    const pagesToFetch = 3;
+    const totalPages = 10;
+    const randomStart = Math.floor(Math.random() * (totalPages - pagesToFetch)) + 1;
+
+    let topRated = [];
+
+    for (let page = randomStart; page < randomStart + pagesToFetch; page++) {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/top_rated?api_key=${
+          import.meta.env.VITE_API_KEY
+        }&language=en-US&page=${page}`
+      );
+      const data = await res.json();
+      topRated = topRated.concat(data.results || []);
+    }
+
+    setTopRatedMovies(topRated);
+  } catch (err) {
+    console.error("Error fetching top rated movies:", err);
+  }
+};
+
     const fetchTrending = async () => {
       try {
         const res = await fetch(
@@ -144,36 +171,26 @@ const Home = ({
     };
 
     const fetchIndianMovies = async () => {
-      try {
-        const indianLangs = [
-          "hi",
-          "te",
-          "ta",
-          "ml",
-          "kn",
-          "mr",
-          "bn",
-          "gu",
-          "pa",
-          "ur",
-        ];
-        let allIndianMovies = [];
+  try {
+    const indianLangs = ["hi", "te", "ta", "ml", "kn", "mr", "bn", "gu", "pa", "ur"];
+    let allIndianMovies = [];
 
-        for (let lang of indianLangs) {
-          const res = await fetch(
-            `https://api.themoviedb.org/3/discover/movie?with_original_language=${lang}&sort_by=popularity.desc&api_key=${
-              import.meta.env.VITE_API_KEY
-            }&page=1`
-          );
-          const data = await res.json();
-          allIndianMovies = allIndianMovies.concat(data.results || []);
-        }
+    for (let lang of indianLangs) {
+      const randomPage = Math.floor(Math.random() * 10) + 1;
+      const res = await fetch(
+        `https://api.themoviedb.org/3/discover/movie?with_original_language=${lang}&sort_by=popularity.desc&page=${randomPage}&api_key=${
+          import.meta.env.VITE_API_KEY
+        }`
+      );
+      const data = await res.json();
+      allIndianMovies = allIndianMovies.concat(data.results || []);
+    }
 
-        setIndianMovies(allIndianMovies);
-      } catch (err) {
-        console.error("Failed to fetch Indian movies:", err);
-      }
-    };
+    setIndianMovies(allIndianMovies);
+  } catch (err) {
+    console.error("Failed to fetch Indian movies:", err);
+  }
+};
 
     const fetchRecent = async () => {
       const today = new Date();
@@ -197,19 +214,49 @@ const Home = ({
       }
     };
 
+    const fetchPopularMovies = async () => {
+  try {
+    let pagesToFetch = 5;
+    let totalPages = 20;
+    let randomStart = Math.floor(Math.random() * (totalPages - pagesToFetch)) + 1;
+
+    let combinedArray = [];
+
+    for (let page = randomStart; page < randomStart + pagesToFetch; page++) {
+      const res = await fetch(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${
+          import.meta.env.VITE_API_KEY
+        }&language=en-US&page=${page}`
+      );
+      const data = await res.json();
+      combinedArray = combinedArray.concat(data.results || []);
+    }
+
+    setPopularMovies(combinedArray); // No filter here; shuffle in JSX if needed
+  } catch (err) {
+    console.error("Error fetching popular movies:", err);
+  }
+};
+
     const fetchTVShows = async () => {
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/tv/popular?api_key=${
-            import.meta.env.VITE_API_KEY
-          }&language=en-US&page=1`
-        );
-        const data = await res.json();
-        setPopularTVShows(data.results || []);
-      } catch (err) {
-        console.error("Error fetching TV shows:", err);
-      }
-    };
+  try {
+    const totalPages = 20;
+    const randomPage = Math.floor(Math.random() * totalPages) + 1;
+
+    const res = await fetch(
+      `https://api.themoviedb.org/3/tv/popular?api_key=${
+        import.meta.env.VITE_API_KEY
+      }&language=en-US&page=${randomPage}`
+    );
+    const data = await res.json();
+    setPopularTVShows(data.results || []);
+  } catch (err) {
+    console.error("Error fetching TV shows:", err);
+  }
+};
+
+fetchTopRatedMovies();
+fetchPopularMovies();
     fetchIndianMovies()
     fetchTVShows();
     fetchRecent();
@@ -327,9 +374,6 @@ const Home = ({
 
   // Defensive for movie.results
   const yourMovies = movie?.results || [];
-  const topRatedMovies = allMovies.filter((item) => item.vote_average > 8);
-  const indianLanguages = ["hi", "te", "ta", "ml", "kn", "mr", "bn"];
-  const popularMovies = allMovies.filter((item) => item.popularity > 30);
 
   const shuffleArray = (arr) => [...arr].sort(() => Math.random() - 0.5);
 

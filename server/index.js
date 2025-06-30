@@ -4,20 +4,21 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import movieRoutes from './routes/movieRoutes.js';
 import geminiRoutes from './routes/geminiRoutes.js';
-import path from 'path'
+import { join, resolve, dirname } from 'path';
+import { fileURLToPath } from 'url'
 
 dotenv.config()
 
 const port = process.env.PORT || 3000
 const mongoURI = process.env.MONGO_URI
 const app = express()
-const __dirname=path.resolve()
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 
 app.use(express.json())
-app.use(cors({
-  origin: "*",
-  credentials: true
-}))
+app.use(cors())
 
 
 mongoose.connect(mongoURI)
@@ -27,12 +28,12 @@ mongoose.connect(mongoURI)
   })
   .catch((err) => console.error('❌ MongoDB connection error:', err));
 
-app.get('/', (req, res) => {
-  res.send('API running')
-})
+// app.get('/', (req, res) => {
+//   res.send('API running')
+// })
 
 app.use('/movies', movieRoutes)
-app.use('/movies', geminiRoutes)
+app.use('/recommend', geminiRoutes)
 
 const userData = new Map();
 
@@ -56,12 +57,11 @@ app.patch("/user/set-avatar/:id", (req, res) => {
   res.json({ message: "Avatar updated successfully" });
 });
 
+app.use(express.static(join(__dirname, '../client/dist')));
 
-app.use(express.static(path.join(__dirname,"/client/dist")))
-app.get("*",(req,res)=>{
-  res.sendFile(path.resolve(__dirname,"client","dist","index.html"))
-})
-
+app.get('*', (req, res) => {
+  res.sendFile(resolve(__dirname, '../client/dist', 'index.html'));
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

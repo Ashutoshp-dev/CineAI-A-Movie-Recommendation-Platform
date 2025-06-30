@@ -7,10 +7,11 @@ export default defineConfig(({mode})=>({
   server: {
     host:true,
     proxy:{
-      '/movies': 'https://cineai-a-movie-recommendation-platform.onrender.com',
-      '/user': 'https://cineai-a-movie-recommendation-platform.onrender.com',
+      '/movies': 'http://localhost:3000',
+      '/user': 'http://localhost:3000',
+      '/recommend': 'http://localhost:3000',
     }
   },
-  base: mode === 'production' ? '/CineAI-A-Movie-Recommendation-Platform/' : '/',
+  base: mode === 'production' ? '/' : '/',
   plugins: [react(), tailwindcss()],
 }))

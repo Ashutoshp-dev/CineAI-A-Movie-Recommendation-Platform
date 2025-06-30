@@ -70,7 +70,7 @@ const LikedMovies = ({
       }
 
       try {
-        const res = await fetch("/movies/recommend/liked", {
+        const res = await fetch("/recommend/liked", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

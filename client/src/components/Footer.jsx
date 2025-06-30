@@ -10,7 +10,7 @@ const Footer = () => {
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="relative h-auto bg-gray-950 text-white py-10 px-5 gap-7 flex flex-col items-center"
+            className="relative h-auto bg-gray-950 text-white pt-10 px-5 gap-5 flex flex-col items-center"
           >
             <div className="flex gap-[5rem] w-1/2 items-center justify-center">
                 <div className="Links flex flex-col gap-3 items-center px-10 border-r-2 border-l-2 border-blue-500">
@@ -35,7 +35,7 @@ const Footer = () => {
       <img
         src={footerImg}
         alt=""
-        className="absolute bottom-0 w-[100%] h-[30%] "
+        className="absolute bottom-0 w-[100%] h-[5rem] "
       />
     </motion.section>
   );

@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://Ashutoshp-dev.github.io/CineAI-A-Movie-Recommendation-Platform",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -23,6 +22,7 @@
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.6.2",
     "react-toastify": "^11.0.5",
+    "server": "file:..",
     "tailwindcss": "^4.1.4"
   },
   "devDependencies": {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/pages/Home";
@@ -12,7 +12,6 @@ import like from "./assets/like.svg";
 import liked from "./assets/liked.svg";
 import save from "./assets/save-svg.svg";
 import saved from "./assets/saved.svg";
-import { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 const API_KEY = import.meta.env.VITE_API_KEY;
 import { onAuthStateChanged } from "firebase/auth";

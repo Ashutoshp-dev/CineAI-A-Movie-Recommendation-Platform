@@ -76,7 +76,7 @@ async function callGemini(prompt) {
 
 //ROUTES
 
-router.post("/recommend/liked", async (req, res) => {
+router.post("/liked", async (req, res) => {
   try {
     const { likedMovies } = req.body;
 
@@ -95,7 +95,7 @@ router.post("/recommend/liked", async (req, res) => {
   }
 });
 
-router.post("/recommend/saved", async (req, res) => {
+router.post("/saved", async (req, res) => {
   try {
     const { savedMovies } = req.body;
 
@@ -114,7 +114,7 @@ router.post("/recommend/saved", async (req, res) => {
   }
 });
 
-router.post("/recommend/mixed", async (req, res) => {
+router.post("/mixed", async (req, res) => {
   try {
     const { likedMovies, savedMovies } = req.body;
     const allMovies = [...(likedMovies || []), ...(savedMovies || [])];

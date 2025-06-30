@@ -266,7 +266,7 @@ fetchPopularMovies();
   useEffect(() => {
     const fetchMixedRecommendations = async () => {
       try {
-        const res = await fetch("/movies/recommend/mixed", {
+        const res = await fetch("/recommend/mixed", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ likedMovies, savedMovies }),

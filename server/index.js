@@ -4,12 +4,14 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import movieRoutes from './routes/movieRoutes.js';
 import geminiRoutes from './routes/geminiRoutes.js';
+import path from 'path'
 
 dotenv.config()
 
 const port = process.env.PORT || 3000
 const mongoURI = process.env.MONGO_URI
 const app = express()
+const __dirname=path.resolve()
 
 app.use(express.json())
 app.use(cors({
@@ -53,6 +55,13 @@ app.patch("/user/set-avatar/:id", (req, res) => {
   userData.set(userId, avatar);
   res.json({ message: "Avatar updated successfully" });
 });
+
+
+app.use(express.static(path.join(__dirname,"/client/dist")))
+app.get("*",(req,res)=>{
+  res.sendFile(path.resolve(__dirname,"client","dist","index.html"))
+})
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)

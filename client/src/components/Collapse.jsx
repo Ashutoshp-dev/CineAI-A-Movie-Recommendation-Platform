@@ -20,7 +20,7 @@ const Collapse = ({ items, limit = 5, renderItem }) => {
         <div className="mt-6 text-center">
           <button
             onClick={toggleCollapse}
-            className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
+            className="px-4 py-2 bg-orange-500 text-white rounded hover:text-orange-600 hover:bg-[rgb(1,0,1)] border-2 border-orange-600 transition cursor-pointer"
           >
             {isCollapsed ? `Show All (${items.length})` : "Show Less"}
           </button>

@@ -1,20 +1,9 @@
 import React from "react";
 import footerImg from "../assets/glow.svg";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  const cineRef = useRef(null);
-
-  useEffect(() => {
-    gsap.fromTo(
-      cineRef.current,
-      { opacity: 0, y: 10 },
-      { opacity: 0.3, y: 0, duration: 1.2, ease: "power2.out" }
-    );
-  }, []);
 
   return (
     <motion.section

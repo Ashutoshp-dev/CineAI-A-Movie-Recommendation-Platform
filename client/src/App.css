@@ -1,0 +1,44 @@
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 65px;
+  height: 117px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+}
+.loader div{
+  position: absolute;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #ff8001;    
+  box-shadow: 0 0 0 50px;
+  clip-path: polygon(100% 0, 23% 46%, 46% 44%, 15% 69%, 38% 67%, 0 100%, 76% 57%, 53% 58%, 88% 33%, 60% 37%);
+}
+.loader:after {
+  animation: l8 1s infinite;
+  transform: perspective(300px) translateZ(0px)
+}
+@keyframes l8 {
+  to {transform:perspective(300px) translateZ(180px);opacity:0}
+}
+body{
+  background-color: rgb(2,7,19);
+}
+button:active {
+  transform: scale(0.95);
+}
+
+.neon-toast {
+  background: #0e0e0e !important;
+  color: #ff8001 !important;
+  border: 1px solid #ff8001 !important;
+  box-shadow: 0 0 15px #ff8001, 0 0 5px #ff8001 inset;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 0 0 2px #ff8001;
+  border-radius: 8px !important;
+}
+

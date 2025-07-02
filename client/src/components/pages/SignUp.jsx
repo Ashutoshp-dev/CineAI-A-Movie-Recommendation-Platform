@@ -43,7 +43,7 @@ const SignUp = () => {
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-[50%] h-screen bg-gray-900 text-white">
-      <h2 className="text-3xl pb-5 border-b-2">Sign Up</h2>
+      <h2 className="text-3xl py-5 border-b-2">Sign Up</h2>
       {error && <p className="text-red-400 pt-5">{error}</p>}
       <form className="flex flex-col gap-4 w-[100%] items-center text-amber-200 pt-5">
         <div className="flex justify-around items-center gap-10 p-5 w-full">

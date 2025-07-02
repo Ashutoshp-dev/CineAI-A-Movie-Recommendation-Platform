@@ -97,9 +97,9 @@ console.log("Fetched data:", data);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return (
-    <div className="w-full h-[5rem] flex justify-between pl-3 text-white fixed z-50 bg-black/40 backdrop-blur-md">
-      <div className=" h-[5rem] w-[5rem] flex items-center text-3xl cursor-pointer gap-1 relative">
-        <img src={logo4} alt="" className="absolute top-0 left-0 h-[5rem] w-[5rem] " />
+    <div className="w-full h-[4rem] flex justify-between pl-3 text-white fixed z-50 bg-black/40 backdrop-blur-md">
+      <div className=" h-[4rem] w-[4rem] flex items-center text-3xl cursor-pointer gap-1 relative">
+        <img src={logo4} alt="" className="absolute top-0 left-0 h-[4rem] w-[4rem] " />
         <h2 className="flex absolute bg-transparent items-center justify-center top-0 left-[4rem] py-5 text-3xl text-orange-400 font-bold"><span className="text-[rgb(0,143,212)] bg-transparent">Cine</span><span className="text-[rgb(182,1,36)] bg-transparent">AI</span></h2>
       </div>
       <div className="right flex gap-5 w-[20%] min-w-[25rem] pr-10 justify-end items-center opacity-100 text-white">

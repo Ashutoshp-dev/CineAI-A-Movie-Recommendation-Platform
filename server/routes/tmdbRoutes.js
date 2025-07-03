@@ -21,37 +21,37 @@ const fetchFromTMDB = async (endpoint, res) => {
 //  Popular Movies
 router.get("/popular", (req, res) => {
   const page = req.query.page || 1;
-  fetchFromTMDB(res, `/movie/popular?page=${page}`);
+  fetchFromTMDB(`/movie/popular?page=${page}`, res);
 });
 
 //  Top Rated Movies
 router.get("/toprated", (req, res) => {
   const page = req.query.page || 1;
-  fetchFromTMDB(res, `/movie/top_rated?page=${page}`);
+  fetchFromTMDB(`/movie/top_rated?page=${page}`, res);
 });
 
 //  Trending Movies
 router.get("/trending", (req, res) => {
-  fetchFromTMDB(res, `/trending/movie/week?`);
+  fetchFromTMDB(`/trending/movie/week?`, res);
 });
 
 //  Indian Movies
 router.get("/indian", (req, res) => {
   const page = req.query.page || 1;
-  fetchFromTMDB(res, `/discover/movie?with_original_language=hi&sort_by=popularity.desc&page=${page}`);
+  fetchFromTMDB(`/discover/movie?with_original_language=hi&sort_by=popularity.desc&page=${page}`,res);
 });
 
 //  Recent Releases
 router.get("/recent", (req, res) => {
   const start = "2025-04-03";
   const end = "2025-07-02";
-  fetchFromTMDB(res, `/discover/movie?primary_release_date.gte=${start}&primary_release_date.lte=${end}&sort_by=release_date.desc`);
+  fetchFromTMDB(`/discover/movie?primary_release_date.gte=${start}&primary_release_date.lte=${end}&sort_by=release_date.desc`,res);
 });
 
 //  TV Shows
 router.get("/tv", (req, res) => {
   const page = req.query.page || 1;
-  fetchFromTMDB(res, `/tv/popular?page=${page}`);
+  fetchFromTMDB(`/tv/popular?page=${page}`,res);
 });
 
 export default router;

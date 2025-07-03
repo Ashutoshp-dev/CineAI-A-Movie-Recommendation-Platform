@@ -14,13 +14,13 @@ const SearchPage = ({
 }) => {
   const location = useLocation();
   const [searchResults, setSearchResults] = useState([]);
-  const query = new URLSearchParams(location.search).get("query");
+  const query = new URLSearchParams(location.search).get("q");
   useEffect(() => {
     if (query) {
       fetch(
         `${
           import.meta.env.VITE_BACKEND_URL
-        }/tmdb/search?query=${encodeURIComponent(query)}`
+        }/tmdb/search?q=${encodeURIComponent(query)}`
       )
         .then((response) => response.json())
         .then((data) => {

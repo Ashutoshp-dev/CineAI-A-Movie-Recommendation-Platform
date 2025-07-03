@@ -91,7 +91,7 @@ const Home = ({
   useEffect(() => {
   const fetchAllMovies = async () => {
     try {
-      const res = await fetch(`${baseURL}/tmdb/popular-bulk`);
+      const res = await fetch(`${baseURL}/tmdb/popular`);
       const data = await res.json();
       const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
       setAllMovies(shuffleArray(data.results || []));
@@ -106,7 +106,7 @@ const Home = ({
 useEffect(() => {
   const fetchTopRatedMovies = async () => {
     try {
-      const res = await fetch(`${baseURL}/tmdb/top-rated`);
+      const res = await fetch(`${baseURL}/tmdb/toprated`);
       const data = await res.json();
       setTopRatedMovies(data.results || []);
     } catch (err) {

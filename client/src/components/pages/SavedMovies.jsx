@@ -23,7 +23,7 @@ const SavedMovies = ({
     setSelectedMovie(movie);
     setShowMenu(true);
     try {
-      const res = await fetch(`${baseURL}/tmdb/video/${movie.id}`);
+      const res = await fetch(`${baseURL}/tmdb/trailer?id=${movie.id}`);
       const data = await res.json();
       const video = data.results.find(
         (vid) => vid.site.toLowerCase() === "youtube"
@@ -38,7 +38,7 @@ const SavedMovies = ({
 
   const fetchMovieDetails = async (title) => {
     try {
-      const res = await fetch(`${baseURL}/tmdb/search?q=${encodeURIComponent(title)}`);
+      const res = await fetch(`${baseURL}/tmdb/search?query=${encodeURIComponent(title)}`);
 
       const data = await res.json();
       const bestMatch = data.results?.[0];

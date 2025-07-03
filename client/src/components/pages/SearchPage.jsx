@@ -14,20 +14,24 @@ const SearchPage = ({
 }) => {
   const location = useLocation();
   const [searchResults, setSearchResults] = useState([]);
-  const query = new URLSearchParams(location.search).get("q");
+  const query = new URLSearchParams(location.search).get("query");
   useEffect(() => {
-  if (query) {
-    fetch(`${import.meta.env.VITE_BACKEND_URL}/tmdb/search?q=${encodeURIComponent(query)}`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data.results);
-        setSearchResults(data.results);
-      })
-      .catch((error) => {
-        console.error("Error fetching search results:", error);
-      });
-  }
-}, [query]);
+    if (query) {
+      fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/tmdb/search?query=${encodeURIComponent(query)}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data.results);
+          setSearchResults(data.results);
+        })
+        .catch((error) => {
+          console.error("Error fetching search results:", error);
+        });
+    }
+  }, [query]);
 
   const renderMovieCard = (item) => (
     <div
@@ -100,11 +104,12 @@ const SearchPage = ({
       <div>
         <h2 className="text-3xl pt-10">
           Search Results for:{" "}
-          <span className="text-orange-400">
-            {new URLSearchParams(location.search).get("q").toUpperCase()}
-          </span>
+          <span className="text-orange-400">{query?.toUpperCase()}</span>
         </h2>
       </div>
+      {searchResults.length === 0 && query && (
+        <p className="text-gray-400">No results found for "{query}"</p>
+      )}
       <Collapse items={searchResults} limit={5} renderItem={renderMovieCard} />
     </section>
   );

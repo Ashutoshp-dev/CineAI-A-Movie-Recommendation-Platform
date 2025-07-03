@@ -2,11 +2,14 @@ import React from "react";
 import "firebase/auth";
 import { useState } from "react";
 import { auth, googleProvider } from "../../firebase/config";
-import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { Link , useNavigate} from "react-router-dom";
+import {
+  createUserWithEmailAndPassword,
+  signInWithPopup,
+  updateProfile,
+} from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import "../../App.css"
-
+import "../../App.css";
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -24,20 +27,23 @@ const SignUp = () => {
         email,
         password
       );
-      toast.success("User signed up successfully:", userCredentials.user);
+      await updateProfile(userCredentials.user, {
+        displayName: username,
+      });
+      toast.success("User signed up successfully");
       navigate("/");
     } catch (err) {
-      toast.error("Error signing up:", err);
+      toast.error("Error signing up");
       setError(err.message);
     }
   };
   const handleGoogleSignIn = async (e) => {
     try {
       const UserFromGoogle = await signInWithPopup(auth, googleProvider);
-      toast.success("Google sign-in successful:", UserFromGoogle.user);
+      toast.success("Google sign-in successful");
       navigate("/");
     } catch (err) {
-      toast.error("Error signing in with Google:", err);
+      toast.error("Error signing in with Google");
       setError(err.message);
     }
   };
@@ -102,12 +108,20 @@ const SignUp = () => {
 
       <div className="mt-4">
         <span>Or sign up with: </span>
-        <button onClick={handleGoogleSignIn} className="bg-blue-500 px-4 py-2 rounded mt-2">Google</button>
+        <button
+          onClick={handleGoogleSignIn}
+          className="bg-blue-500 px-4 py-2 rounded mt-2"
+        >
+          Google
+        </button>
       </div>
 
       <div>
         <p className="text-sm text-gray-400 mt-4">
-          Already have an account? <Link to="/signin" className="text-blue-400 hover:underline">Sign In</Link>
+          Already have an account?{" "}
+          <Link to="/signin" className="text-blue-400 hover:underline">
+            Sign In
+          </Link>
         </p>
       </div>
     </div>

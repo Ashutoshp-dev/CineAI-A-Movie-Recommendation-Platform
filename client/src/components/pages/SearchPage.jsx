@@ -16,22 +16,18 @@ const SearchPage = ({
   const [searchResults, setSearchResults] = useState([]);
   const query = new URLSearchParams(location.search).get("q");
   useEffect(() => {
-    if (query) {
-      fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${
-          import.meta.env.VITE_API_KEY
-        }&query=${encodeURIComponent(query)}`
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data.results);
-          setSearchResults(data.results);
-        })
-        .catch((error) => {
-          console.error("Error fetching search results:", error);
-        });
-    }
-  }, [query]);
+  if (query) {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/tmdb/search?q=${encodeURIComponent(query)}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data.results);
+        setSearchResults(data.results);
+      })
+      .catch((error) => {
+        console.error("Error fetching search results:", error);
+      });
+  }
+}, [query]);
 
   const renderMovieCard = (item) => (
     <div

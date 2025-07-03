@@ -17,16 +17,13 @@ const SavedMovies = ({
   const [showmenu, setShowMenu] = useState(false);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [trailerKey, setTrailerKey] = useState(null);
+  const baseURL = import.meta.env.VITE_BACKEND_URL;
 
   const handleShowMenu = async (movie) => {
     setSelectedMovie(movie);
     setShowMenu(true);
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${movie.id}/videos?api_key=${
-          import.meta.env.VITE_API_KEY
-        }`
-      );
+      const res = await fetch(`${baseURL}/tmdb/video/${movie.id}`);
       const data = await res.json();
       const video = data.results.find(
         (vid) => vid.site.toLowerCase() === "youtube"
@@ -41,11 +38,7 @@ const SavedMovies = ({
 
   const fetchMovieDetails = async (title) => {
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(
-          title
-        )}&api_key=${import.meta.env.VITE_API_KEY}`
-      );
+      const res = await fetch(`${baseURL}/tmdb/search?q=${encodeURIComponent(title)}`);
 
       const data = await res.json();
       const bestMatch = data.results?.[0];
@@ -70,7 +63,7 @@ const SavedMovies = ({
       }
 
       try {
-        const res = await fetch("/recommend/saved", {
+        const res = await fetch(`${baseURL}/recommend/saved`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

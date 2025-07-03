@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../firebase/config";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify"
 
 const SignIn = () => {
   const [email, setEmail] = useState("");
@@ -14,18 +15,22 @@ const SignIn = () => {
     setError(null);
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Logged in successfully");
       navigate("/");
     } catch (err) {
       setError(err.message);
+      toast.error("Error logging in");
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
+      toast.success("Logged in successfully");
       navigate("/");
     } catch (err) {
       setError(err.message);
+      toast.error("Error logging in");
     }
   };
 
@@ -66,7 +71,7 @@ const SignIn = () => {
       </div>
       <div>
         <p className="mt-4 text-sm">
-          Don't have an account? <a href="/signup" className="text-blue-400">Sign Up</a>
+          Don't have an account? <Link to="/signup" className="text-blue-400 hover:underline">Sign Up</Link>
         </p>
       </div>
     </div>

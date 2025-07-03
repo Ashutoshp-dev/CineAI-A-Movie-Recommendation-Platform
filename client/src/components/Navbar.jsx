@@ -14,6 +14,7 @@ const Navbar = ({ user }) => {
   const [showMenu, setShowMenu] = useState(false);
   const menuRef = useRef();
   const [avatar, setAvatar] = useState(null);
+  const baseURL = import.meta.env.VITE_BACKEND_URL;
 
   const [profileCol, setProfileCol] = useState({
     bg: "rgb(220,220,220)",
@@ -57,7 +58,7 @@ const Navbar = ({ user }) => {
       toast.success(`Avatar set to ${avatarChoice.slice(0, avatarChoice.length - 1)}`);
     }
     try {
-      await fetch(`/user/set-avatar/${user.uid}`, {
+      await fetch(`${baseURL}//user/set-avatar/${user.uid}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +73,7 @@ const Navbar = ({ user }) => {
   useEffect(() => {
     const fetchAvatar = async () => {
     try {
-      const res = await fetch(`/user/${user.uid}`);
+      const res = await fetch(`${baseURL}/user/${user.uid}`);
       const data = await res.json();
       if (data?.avatar) setAvatar(data.avatar);
       console.log("Fetching avatar for user:", user.uid);

@@ -26,48 +26,48 @@ function App() {
   const [savedMovies, setSavedMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const baseURL = import.meta.env.VITE_BACKEND_URL;
 
   const getMovies = async (query = "") => {
-    setLoading(true);
+  setLoading(true);
 
-    try {
-      let url = "";
-      if (query) {
-        url = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=en-US`;
-      } else {
-        let pages = Math.floor(Math.random() * 500) + 1;
-        url = `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${pages}`;
-      }
-
-      const res = await fetch(url);
-      const data = await res.json();
-
-      if (query && data.results.length > 0) {
-        setBanner(data.results[0]);
-      } else if (!query && data.results.length > 0) {
-        setBanner(
-          data.results[Math.floor(Math.random() * data.results.length)]
-        );
-      }
-      setMovie(data);
-    } catch (error) {
-      toast.error("Error fetching movies:", error);
-    } finally {
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+  try {
+    let res;
+    if (query) {
+      res = await fetch(`${baseURL}/tmdb/search?query=${query}`);
+    } else {
+      let page = Math.floor(Math.random() * 500) + 1;
+      res = await fetch(`${baseURL}/tmdb/popular?page=${page}`);
     }
-  };
+
+    const data = await res.json();
+
+    if (query && data.results?.length > 0) {
+      setBanner(data.results[0]);
+    } else if (!query && data.results?.length > 0) {
+      setBanner(data.results[Math.floor(Math.random() * data.results.length)]);
+    }
+
+    setMovie(data);
+  } catch (error) {
+    console.error("Error fetching movies:", error);
+    toast.error("Failed to fetch movies.");
+  } finally {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }
+};
 
   const fetchLikedData = async () => {
     if (!user) return;
-    const res = await fetch(`/movies/liked?uid=${user.uid}`);
+    const res = await fetch(`${baseURL}/movies/liked?uid=${user.uid}`);
     const data = await res.json();
     setLikedMovies(data);
   };
   const fetchSavedData = async () => {
     if (!user) return;
-    const res = await fetch(`/movies/saved?uid=${user.uid}`);
+    const res = await fetch(`${baseURL}/movies/saved?uid=${user.uid}`);
     const data = await res.json();
     setSavedMovies(data);
   };
@@ -77,12 +77,12 @@ function App() {
     const exists = likedMovies.some((m) => m.id === movie.id);
 
     if (exists) {
-      await fetch(`/movies/liked/${movie.id}?uid=${user.uid}`, {
+      await fetch(`${baseURL}/movies/liked/${movie.id}?uid=${user.uid}`, {
         method: "DELETE",
       });
       toast.success("Movie removed from liked list");
     } else {
-      await fetch("/movies/liked", {
+      await fetch(`${baseURL}/movies/liked`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -101,12 +101,12 @@ function App() {
     const exists = savedMovies.some((m) => m.id === movie.id);
 
     if (exists) {
-      await fetch(`/movies/saved/${movie.id}?uid=${user.uid}`, {
+      await fetch(`${baseURL}/movies/saved/${movie.id}?uid=${user.uid}`, {
         method: "DELETE",
       });
       toast.success("Movie removed from saved list");
     } else {
-      await fetch("/movies/saved", {
+      await fetch(`${baseURL}/movies/saved`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

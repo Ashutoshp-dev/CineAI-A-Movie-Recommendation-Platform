@@ -6,6 +6,7 @@ import movieRoutes from './routes/movieRoutes.js';
 import geminiRoutes from './routes/geminiRoutes.js';
 import { join, resolve, dirname } from 'path';
 import { fileURLToPath } from 'url'
+import tmdbRoutes from './routes/tmdbRoutes.js';
 
 dotenv.config()
 
@@ -18,7 +19,22 @@ const __dirname = dirname(__filename)
 
 
 app.use(express.json())
-app.use(cors())
+
+const allowedOrigins = [
+  'http://localhost:5173', // Dev
+  'http://localhost:3000', // Dev
+  'https://cineai-a-movie-recommendation-platform.onrender.com' // Prod
+];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 
 mongoose.connect(mongoURI)
@@ -34,6 +50,7 @@ mongoose.connect(mongoURI)
 
 app.use('/movies', movieRoutes)
 app.use('/recommend', geminiRoutes)
+app.use('/tmdb', tmdbRoutes);
 
 const userData = new Map();
 
